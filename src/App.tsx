@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TodoForm from './components/TodoForm/TodoForm';
 import TodoFilter from './components/TodoFilter/TodoFilter';
 import TodoList from './components/TodoList/TodoList';
@@ -13,9 +13,46 @@ const initialTodos: Todo[] = [
   { id: 4, title: 'Разобраться с React Hooks', completed: true },
 ];
 
+function getInitialTodos(): Todo[] {
+  try {
+    const savedTodos = localStorage.getItem('todos');
+
+    if (!savedTodos) {
+      return initialTodos;
+    }
+
+    const parsedTodos: unknown = JSON.parse(savedTodos);
+
+    if (!Array.isArray(parsedTodos)) {
+      return initialTodos;
+    }
+
+    const isValid = parsedTodos.every(
+      (todo): todo is Todo =>
+        typeof todo === 'object' &&
+        todo !== null &&
+        typeof todo.id === 'number' &&
+        typeof todo.title === 'string' &&
+        typeof todo.completed === 'boolean',
+    );
+
+    return isValid ? parsedTodos : initialTodos;
+  } catch {
+    return initialTodos;
+  }
+}
+
 function App() {
-  const [todos, setTodos] = useState<Todo[]>(initialTodos);
+  const [todos, setTodos] = useState<Todo[]>(getInitialTodos);
   const [activeFilter, setActiveFilter] = useState<TodoFilterType>('all');
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('todos', JSON.stringify(todos));
+    } catch {
+      console.error('Не удалось сохранить задачи в localStorage');
+    }
+  }, [todos]);
 
   function handleAddTodo(title: string) {
     setTodos((currentTodos) => {
@@ -78,18 +115,30 @@ function App() {
 
         <div className={styles.stats}>
           <div className={styles.statsItem}>
-            <span className={styles.statsNumber}>{todos.length}</span>
-            <span className={styles.statsLabel}>Всего задач</span>
+            <span className={styles.statsNumber}>
+              {todos.length}
+            </span>
+            <span className={styles.statsLabel}>
+              Всего задач
+            </span>
           </div>
 
           <div className={styles.statsItem}>
-            <span className={styles.statsNumber}>{activeCount}</span>
-            <span className={styles.statsLabel}>Активные</span>
+            <span className={styles.statsNumber}>
+              {activeCount}
+            </span>
+            <span className={styles.statsLabel}>
+              Активные
+            </span>
           </div>
 
           <div className={styles.statsItem}>
-            <span className={styles.statsNumber}>{completedCount}</span>
-            <span className={styles.statsLabel}>Выполненные</span>
+            <span className={styles.statsNumber}>
+              {completedCount}
+            </span>
+            <span className={styles.statsLabel}>
+              Выполненные
+            </span>
           </div>
         </div>
 
@@ -98,7 +147,8 @@ function App() {
         <div className={styles.content}>
           <div className={styles.contentHeader}>
             <h2>Список задач</h2>
-            <TodoFilter 
+
+            <TodoFilter
               activeFilter={activeFilter}
               onFilterChange={setActiveFilter}
             />
