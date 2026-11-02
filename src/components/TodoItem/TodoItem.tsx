@@ -4,9 +4,10 @@ import styles from './TodoItem.module.css';
 interface TodoItemProps {
   todo: Todo;
   onToggle: (id: number) => void;
+  onDelete: (id: number) => void;
 }
 
-function TodoItem({ todo, onToggle }: TodoItemProps) {
+function TodoItem({ todo, onToggle, onDelete }: TodoItemProps) {
   return (
     <li
       className={`${styles.item} ${
@@ -32,6 +33,7 @@ function TodoItem({ todo, onToggle }: TodoItemProps) {
         className={styles.delete}
         type="button"
         aria-label="Удалить задачу"
+        onClick={() => onDelete(todo.id)}
       >
         ×
       </button>

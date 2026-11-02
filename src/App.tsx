@@ -44,6 +44,12 @@ function App() {
     );
   }
 
+  function handleDeleteTodo(id: number) {
+  setTodos((currentTodos) =>
+    currentTodos.filter((todo) => todo.id !== id),
+  );
+}
+
   const completedCount = todos.filter(
     (todo) => todo.completed,
   ).length;
@@ -55,10 +61,6 @@ function App() {
       <section className={styles.card}>
         <header className={styles.header}>
           <h1>Мои задачи</h1>
-
-          <div className={styles.headerIcon} aria-hidden="true">
-            ✓
-          </div>
         </header>
 
         <div className={styles.stats}>
@@ -89,6 +91,7 @@ function App() {
           <TodoList
             todos={todos}
             onToggleTodo={handleToggleTodo}
+            onDeleteTodo={handleDeleteTodo}
           />
         </div>
 
