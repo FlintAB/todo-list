@@ -1,75 +1,133 @@
-# React + TypeScript + Vite
+## О проекте
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Todo List позволяет создавать задачи, отмечать их выполнение, удалять ненужные записи и фильтровать список по статусу.
 
-Currently, two official plugins are available:
+Интерфейс отображает статистику задач и сохраняет изменения в локальном хранилище браузера. Благодаря этому данные остаются доступными после перезагрузки страницы.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Функциональность
 
-## React Compiler
+- **Добавление задач** — создание новых задач через текстовое поле и кнопку.
+- **Валидация** — предотвращение добавления пустых задач и строк, содержащих только пробелы.
+- **Управление статусом** — возможность отмечать задачи как выполненные и возвращать их в активное состояние.
+- **Удаление задач** — удаление отдельных задач из списка.
+- **Фильтрация** — просмотр задач по категориям:
+  - Все задачи.
+  - Активные задачи.
+  - Выполненные задачи.
+- **Статистика** — отображение общего количества задач, активных и выполненных задач.
+- **Сохранение данных** — автоматическое сохранение списка задач в `localStorage`.
+- **Восстановление данных** — загрузка ранее сохранённых задач при повторном открытии приложения.
+- **Адаптивный интерфейс** — возможность пользоваться приложением на разных размерах экранов.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Технологический стек
 
-## Expanding the ESLint configuration
+| Технология | Назначение |
+|---|---|
+| React | Построение пользовательского интерфейса |
+| TypeScript | Статическая типизация |
+| Vite | Сборка и запуск проекта |
+| CSS Modules | Модульная организация стилей |
+| HTML5 | Разметка приложения |
+| CSS3 | Стилизация интерфейса |
+| ESLint | Проверка качества кода |
+| pnpm | Управление зависимостями |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Структура проекта
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+todo-list/
+├── src/
+│   ├── components/
+│   │   ├── TodoForm/
+│   │   │   ├── TodoForm.tsx
+│   │   │   └── TodoForm.module.css
+│   │   ├── TodoFilter/
+│   │   │   ├── TodoFilter.tsx
+│   │   │   └── TodoFilter.module.css
+│   │   ├── TodoItem/
+│   │   │   ├── TodoItem.tsx
+│   │   │   └── TodoItem.module.css
+│   │   └── TodoList/
+│   │       ├── TodoList.tsx
+│   │       └── TodoList.module.css
+│   ├── types/
+│   │   └── types.ts
+│   ├── App.tsx
+│   ├── App.module.css
+│   ├── index.css
+│   └── main.tsx
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## Установка и запуск
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Требования
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Перед началом работы убедитесь, что на вашем компьютере установлены:
 
+- [Node.js](https://nodejs.org/) — рекомендуется актуальная LTS-версия.
+- [pnpm](https://pnpm.io/).
+
+### Клонирование репозитория
+
+```bash
+git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>
 ```
+
+### Переход в директорию проекта
+
+```bash
+cd todo-list
+```
+
+### Установка зависимостей
+
+```bash
+pnpm install
+```
+
+### Запуск приложения в режиме разработки
+
+```bash
+pnpm dev
+```
+
+После запуска Vite приложение будет доступно по адресу:
+
+```text
+http://localhost:5173
+```
+
+## Доступные команды
+
+| Команда | Описание |
+|---|---|
+| `pnpm dev` | Запуск локального сервера разработки |
+| `pnpm build` | Проверка TypeScript и сборка production-версии |
+| `pnpm lint` | Проверка кода с помощью ESLint |
+| `pnpm preview` | Предварительный просмотр production-сборки |
+
+## Хранение данных
+
+Для сохранения списка задач используется браузерное хранилище `localStorage`.
+
+Данные автоматически сохраняются при изменении списка задач и восстанавливаются при следующем запуске приложения.
+
+Используемый ключ хранения:
+
+```text
+todos
+```
+
+Таким образом, для работы приложения не требуется серверная часть или база данных.
+
+## Архитектура приложения
+
+Приложение разделено на небольшие независимые компоненты, каждый из которых отвечает за отдельную часть интерфейса и функциональности.
+
+- **TodoForm** — форма добавления новых задач.
+- **TodoFilter** — переключение фильтров списка.
+- **TodoItem** — отображение отдельной задачи и управление её статусом.
+- **TodoList** — отображение списка задач.
+- **App** — основной компонент приложения, управление состоянием, обработчиками событий, фильтрацией и сохранением данных.
+
+Для типизации данных используется TypeScript. Стили компонентов изолированы с помощью CSS Modules.
