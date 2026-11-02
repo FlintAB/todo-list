@@ -3,7 +3,7 @@ import { useState } from 'react';
 import TodoForm from './components/TodoForm/TodoForm';
 import TodoFilter from './components/TodoFilter/TodoFilter';
 import TodoList from './components/TodoList/TodoList';
-import type { Todo } from './types/types';
+import type { Todo, TodoFilterType } from './types/types';
 import styles from './App.module.css';
 
 const initialTodos: Todo[] = [
@@ -15,6 +15,7 @@ const initialTodos: Todo[] = [
 
 function App() {
   const [todos, setTodos] = useState<Todo[]>(initialTodos);
+  const [activeFilter, setActiveFilter] = useState<TodoFilterType>('all');
 
   function handleAddTodo(title: string) {
     setTodos((currentTodos) => {
@@ -45,10 +46,22 @@ function App() {
   }
 
   function handleDeleteTodo(id: number) {
-  setTodos((currentTodos) =>
-    currentTodos.filter((todo) => todo.id !== id),
-  );
-}
+    setTodos((currentTodos) =>
+      currentTodos.filter((todo) => todo.id !== id),
+    );
+  }
+
+  const filteredTodos = todos.filter((todo) => {
+    if (activeFilter === 'active') {
+      return !todo.completed;
+    }
+
+    if (activeFilter === 'completed') {
+      return todo.completed;
+    }
+
+    return true;
+  });
 
   const completedCount = todos.filter(
     (todo) => todo.completed,
@@ -85,11 +98,14 @@ function App() {
         <div className={styles.content}>
           <div className={styles.contentHeader}>
             <h2>Список задач</h2>
-            <TodoFilter />
+            <TodoFilter 
+              activeFilter={activeFilter}
+              onFilterChange={setActiveFilter}
+            />
           </div>
 
           <TodoList
-            todos={todos}
+            todos={filteredTodos}
             onToggleTodo={handleToggleTodo}
             onDeleteTodo={handleDeleteTodo}
           />
