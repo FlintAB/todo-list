@@ -34,6 +34,16 @@ function App() {
     });
   }
 
+  function handleToggleTodo(id: number) {
+    setTodos((currentTodos) =>
+      currentTodos.map((todo) =>
+        todo.id === id
+          ? { ...todo, completed: !todo.completed }
+          : todo,
+      ),
+    );
+  }
+
   const completedCount = todos.filter(
     (todo) => todo.completed,
   ).length;
@@ -44,7 +54,7 @@ function App() {
     <main className={styles.app}>
       <section className={styles.card}>
         <header className={styles.header}>
-            <h1>Мои задачи</h1>
+          <h1>Мои задачи</h1>
 
           <div className={styles.headerIcon} aria-hidden="true">
             ✓
@@ -76,7 +86,10 @@ function App() {
             <TodoFilter />
           </div>
 
-          <TodoList todos={todos} />
+          <TodoList
+            todos={todos}
+            onToggleTodo={handleToggleTodo}
+          />
         </div>
 
         <footer className={styles.footer}>

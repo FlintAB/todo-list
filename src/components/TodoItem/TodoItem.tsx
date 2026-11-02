@@ -1,12 +1,12 @@
-
 import type { Todo } from '../../types/types';
 import styles from './TodoItem.module.css';
 
 interface TodoItemProps {
   todo: Todo;
+  onToggle: (id: number) => void;
 }
 
-function TodoItem({ todo }: TodoItemProps) {
+function TodoItem({ todo, onToggle }: TodoItemProps) {
   return (
     <li
       className={`${styles.item} ${
@@ -22,6 +22,7 @@ function TodoItem({ todo }: TodoItemProps) {
             : 'Отметить как выполненную'
         }
         aria-pressed={todo.completed}
+        onClick={() => onToggle(todo.id)}
       >
       </button>
 

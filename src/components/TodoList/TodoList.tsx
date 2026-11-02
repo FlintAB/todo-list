@@ -4,21 +4,22 @@ import styles from './TodoList.module.css';
 
 interface TodoListProps {
   todos: Todo[];
+  onToggleTodo: (id: number) => void;
 }
 
-function TodoList({ todos }: TodoListProps) {
+function TodoList({ todos, onToggleTodo }: TodoListProps) {
   if (todos.length === 0) {
-    return (
-      <p className={styles.empty}>
-        Пока нет задач
-      </p>
-    );
+    return <p className={styles.empty}>Пока нет задач</p>;
   }
 
   return (
     <ul className={styles.list}>
       {todos.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} />
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          onToggle={onToggleTodo}
+        />
       ))}
     </ul>
   );
