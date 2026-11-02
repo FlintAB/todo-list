@@ -23,7 +23,6 @@ function TodoItem({ todo }: TodoItemProps) {
         }
         aria-pressed={todo.completed}
       >
-        {todo.completed && <span aria-hidden="true">✓</span>}
       </button>
 
       <span className={styles.title}>{todo.title}</span>

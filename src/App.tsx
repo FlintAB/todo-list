@@ -1,4 +1,5 @@
 
+import { useState } from 'react';
 import TodoForm from './components/TodoForm/TodoForm';
 import TodoFilter from './components/TodoFilter/TodoFilter';
 import TodoList from './components/TodoList/TodoList';
@@ -13,22 +14,46 @@ const initialTodos: Todo[] = [
 ];
 
 function App() {
-  const completedCount = initialTodos.filter(
+  const [todos, setTodos] = useState<Todo[]>(initialTodos);
+
+  function handleAddTodo(title: string) {
+    setTodos((currentTodos) => {
+      const nextId =
+        currentTodos.reduce(
+          (maxId, todo) => Math.max(maxId, todo.id),
+          0,
+        ) + 1;
+
+      const newTodo: Todo = {
+        id: nextId,
+        title,
+        completed: false,
+      };
+
+      return [...currentTodos, newTodo];
+    });
+  }
+
+  const completedCount = todos.filter(
     (todo) => todo.completed,
   ).length;
 
-  const activeCount = initialTodos.length - completedCount;
+  const activeCount = todos.length - completedCount;
 
   return (
     <main className={styles.app}>
       <section className={styles.card}>
         <header className={styles.header}>
             <h1>Мои задачи</h1>
+
+          <div className={styles.headerIcon} aria-hidden="true">
+            ✓
+          </div>
         </header>
 
         <div className={styles.stats}>
           <div className={styles.statsItem}>
-            <span className={styles.statsNumber}>{initialTodos.length}</span>
+            <span className={styles.statsNumber}>{todos.length}</span>
             <span className={styles.statsLabel}>Всего задач</span>
           </div>
 
@@ -43,7 +68,7 @@ function App() {
           </div>
         </div>
 
-        <TodoForm />
+        <TodoForm onAddTodo={handleAddTodo} />
 
         <div className={styles.content}>
           <div className={styles.contentHeader}>
@@ -51,7 +76,7 @@ function App() {
             <TodoFilter />
           </div>
 
-          <TodoList todos={initialTodos} />
+          <TodoList todos={todos} />
         </div>
 
         <footer className={styles.footer}>
